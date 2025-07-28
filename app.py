@@ -17,6 +17,10 @@ app.config.from_object(Config)
 db.init_app(app)
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
 
 # Create upload folder if not exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
